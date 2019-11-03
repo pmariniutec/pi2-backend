@@ -2,7 +2,13 @@
 
 ## For now, we only have a production environment
 
-## Management Command to create initial db
+## Dependencies
+- PostgreSQL
+- Python 3.6
+- Django 2.2
+- Zappa
+
+## Initial Setup
 ```bash
 # Create user role
 psql -U postgres

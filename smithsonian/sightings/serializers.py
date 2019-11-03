@@ -12,7 +12,7 @@ class SightingImageSerializer(serializers.ModelSerializer):
 
 class SightingSerializer(serializers.ModelSerializer):
 
-    images = SightingImageSerializer(many=True)
+    images = SightingImageSerializer(many=True, read_only=True)
 
     class Meta:
         model = Sighting
@@ -20,7 +20,9 @@ class SightingSerializer(serializers.ModelSerializer):
                   'latitude', 'longitude', 'comment', 'species']
 
     def create(self, validated_data):
-        pass
+        images_data = self.context.get('view').request.FILES
+        sighting = Sighting.objects.create(**validated_data)
+        for image_data in images_data.values():
+            SightingImage.objects.create(sighting=sighting, url=image_data)
 
-    def update(self, instance, validated_data):
-        pass
+        return sighting
